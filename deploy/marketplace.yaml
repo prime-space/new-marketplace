@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: marketplace
+  template:
+    metadata:
+      labels:
+        app: marketplace
+    spec:
+      containers:
+        - name: marketplace
+          image: registry.gitlab.com/crocus-group/marketplace:__BUILD_TAG__
+          ports: [{containerPort: 80}]
+          command: ['/bin/bash']
+          args: ['-c', "php-fpm --nodaemonize & nginx -g 'daemon off;'"]
+      imagePullSecrets:
+        - name: gitlab-registry

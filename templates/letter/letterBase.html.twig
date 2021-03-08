@@ -1,0 +1,63 @@
+{% trans_default_domain 'letterBase' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta http-equiv="Content-Type" content="text/html charset=UTF-8"/>
+</head>
+<body style="margin: 0;height: 100vh;vertical-align: middle;">
+<table style="background-color: #0177FD;padding:20px 20px;height:100%;width:100%;">
+    <tr>
+        <td>
+            <table style="margin:0 auto">
+                <tr>
+                    <td style="width:100%;">
+                        <table style="border-collapse: collapse;width:100%;max-width:760px;background: #ffffff;padding:20px;border-radius:20px;margin:0 auto;font-family: sans-serif;">
+                            <tbody style="padding:90px 0 40px;word-break: break-word;word-wrap: break-word;overflow-wrap: break-word;">
+                            <tr>
+                                <td style="padding: 50px 20px 40px 20px;text-align: center;">
+                                    <a href="https://{{ domain }}" target="_blank">
+                                        <img src="https://{{ domain }}/inc/letter/logo.png" alt="Logo"/>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 20px;">
+                                    <hr style="height:6px;display:block;border:none;background-color:#F3F3F3;margin:0;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:55px;padding-left:20px;padding-right:20px;font-weight:bold;font-size:24px;">
+                                    <span>{% block title %}{% endblock %}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:25px 20px 55px;font-size:16px;">
+                                    <span>{% block body %}{% endblock %}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #F3F3F3;
+                                           border-radius: 8px;
+                                           font-size:13px;
+                                           color:#9C9C9C;
+                                           text-align: center;
+                                           padding: 28px 20px;
+                                ">
+                                    {% trans %}footer{% endtrans %}
+                                    <a href="https://{{ domain }}" target="_blank">{{ domain|upper }}</a>
+                                    {% block unsubscribe %}{% endblock %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

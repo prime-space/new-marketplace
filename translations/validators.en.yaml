@@ -1,0 +1,19 @@
+cart:
+  product-not-available-or-not-found: Product not available
+  items:
+    max: 'Maximum amount of items in cart is {{ limit }}'
+    min: 'Put at least one item to cart'
+    review:
+      date-expired: Unfortunately, you can leave\edit\delete review within %days% days after purchase only.
+      already-reviewed: You already reviewed this product.
+sufficient-product-object-amount:
+  not-in-stock: Out of stock
+  not-enought: 'Only %inStockNum% instance(s) available'
+customer:
+  email-have-not-paid-orders: Not found any paid orders for this email address
+  is-blocked: Sorry, you cannot buy this product.
+review:
+  already-answered: You already answered this review.
+customer-blocked-entity:
+  invalid-entity-type-id: Invalid entity type id
+  invalid-entity-id: Invalid entity id

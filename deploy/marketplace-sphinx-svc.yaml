@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: marketplace-sphinx
+  namespace: mktplc-production
+spec:
+  ports:
+    - port: 9306
+      targetPort: 9306
+      protocol: TCP
+      name: searchd
+  selector:
+    app: marketplace-sphinx

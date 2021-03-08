@@ -1,0 +1,15 @@
+{% extends 'letter/letterBase.html.twig' %}
+{% trans_default_domain 'letterSaleSeller' %}
+
+{% block title %}{% trans %}Dear user{% endtrans %}!{% endblock %}
+
+{% block body %}
+    {% trans %}On the marketplace {% endtrans %} <a href="https://{{ domain }}" target="_blank">{{ domain|upper }}</a> {% trans %}your product has been sold{% endtrans %}.
+    <br/>
+    <br/>{% trans %}See details in private area{% endtrans %}:
+    <br/>
+    <br/><a href="{{ detailsLink }}" target="_blank">{{ detailsLink }}</a>
+    <br/>
+    <br/>{% trans %}Thank you for your cooperation{% endtrans %}!
+    <br/>{% trans %}With respect, administration{% endtrans %} {{ siteName|upper }}
+{% endblock %}

@@ -1,0 +1,128 @@
+stages:
+  - build
+  - containerize
+  - deploy
+
+after_script:
+  - |
+    if [ -e success ]; then
+      echo on success
+    else
+      curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+      --data-urlencode "chat_id=374067270" --data-urlencode "text=Crocuspay.com release ${CI_COMMIT_REF_NAME} ERROR"
+    fi
+    if [ -e deployed ]; then
+      curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            --data-urlencode "chat_id=374067270" --data-urlencode "text=Crocuspay.com release ${CI_COMMIT_REF_NAME} DEPLOYED"
+    fi
+
+build:
+  only: [tags]
+  stage: build
+  environment: {name: production}
+  image: crocusgroup/builder:0.2
+  script:
+    - buildPath=`pwd`
+    - git clone https://$CONFIGS_TOKEN_NAME:$CONFIGS_TOKEN_PASS@gitlab.com/crocus-group/prod-configs.git ~/configs
+    - sed -i "s/__APP_VERSION__/${CI_COMMIT_REF_NAME}/" ~/configs/marketplace/.env
+    - cp ~/configs/marketplace/.env ./
+    - mkdir ~/.aws
+    - cp ~/configs/marketplace/aws/credentials ~/.aws/
+    - composer install --no-dev --no-interaction --no-cache
+    - composer dump-autoload -o
+    - composer dump-env prod
+    - php ./bin/console app:dump-env-json
+    - cd ${buildPath}/vendor/ewll/user-bundle/front; yarn install && yarn run build && rm -rf node_modules
+    - cd ${buildPath}/front/admin; yarn install --production=true && yarn run build && rm -rf node_modules
+    - cd ${buildPath}/front/doc; yarn install --production=true && yarn run build && rm -rf node_modules
+    - cd ${buildPath}/front/customer; yarn install --production=true && yarn run build && rm -rf node_modules
+    - cd ${buildPath}/front/site; yarn install --production=true && yarn run build && rm -rf node_modules
+    - cd ${buildPath}
+    - aws s3 cp ${buildPath}/public/inc/ s3://crocuspay/front/${CI_COMMIT_REF_NAME}/ --acl public-read --recursive
+    - rm -rf ./.git ./.env ./.env.local.json ${buildPath}/public/inc/{admin,doc,customer,site}
+    - tar -czpf build-${CI_COMMIT_REF_NAME}.tar.gz .
+    - aws s3 cp ./build-${CI_COMMIT_REF_NAME}.tar.gz s3://crocuspay/build/
+    - git clone https://$LANDINGS_TOKEN_NAME:$LANDINGS_TOKEN_PASS@gitlab.com/crocus-group/landings.git ~/landings
+    - aws s3 cp ~/landings s3://crocuspay/front/${CI_COMMIT_REF_NAME}/landings/ --acl public-read --recursive
+    - touch $CI_PROJECT_DIR/success
+
+containerize:
+  only: [tags]
+  stage: containerize
+  environment: {name: production}
+  image: docker:19.03.1
+  services: ['docker:19.03.1-dind']
+  variables:
+    MARKETPLACE_IMAGE: registry.gitlab.com/crocus-group/marketplace
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: '/certs'
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: '/certs/client'
+  script: |
+    apk add git curl
+    ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
+        ALPINE_GLIBC_PACKAGE_VERSION="2.27-r0" && \
+        ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
+        ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
+        ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
+        apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
+        wget \
+            "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" \
+            -O "/etc/apk/keys/sgerrand.rsa.pub" && \
+        wget \
+            "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" && \
+        apk add --no-cache \
+            "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" && \
+        \
+        rm "/etc/apk/keys/sgerrand.rsa.pub" && \
+        /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
+        echo "export LANG=$LANG" > /etc/profile.d/locale.sh && \
+        \
+        apk del glibc-i18n && \
+        \
+        rm "/root/.wget-hsts" && \
+        apk del .build-dependencies && \
+        rm \
+            "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
+            "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip -qq awscliv2.zip
+    ./aws/install
+    git clone https://$CONFIGS_TOKEN_NAME:$CONFIGS_TOKEN_PASS@gitlab.com/crocus-group/prod-configs.git ~/configs
+    mkdir ~/.aws
+    cp ~/configs/marketplace/aws/credentials ~/.aws/
+    mkdir ./build
+    cd ./build
+    /usr/local/bin/aws s3 cp s3://crocuspay/build/build-${CI_COMMIT_REF_NAME}.tar.gz ./
+    tar -xzf build-${CI_COMMIT_REF_NAME}.tar.gz
+    rm build-${CI_COMMIT_REF_NAME}.tar.gz
+    docker login -u $PERSONAL_TOKEN_NAME -p $PERSONAL_TOKEN_PASS registry.gitlab.com
+    docker build -f deploy/Dockerfile -t $MARKETPLACE_IMAGE:$CI_COMMIT_REF_NAME .
+    docker push $MARKETPLACE_IMAGE:$CI_COMMIT_REF_NAME
+    touch $CI_PROJECT_DIR/success
+
+deploy:
+  only: [tags]
+  stage: deploy
+  environment: {name: production}
+  image:
+    name: bitnami/kubectl
+    entrypoint: ['']#https://gitlab.com/gitlab-org/gitlab-foss/issues/65110#note_198232928
+  script:
+    - cd deploy
+    - sed -i "s/__BUILD_TAG__/${CI_COMMIT_REF_NAME}/" marketplace.yaml marketplace-d.yaml marketplace-sphinx.yaml
+    - kubectl version
+    - kubectl apply -f marketplace.yaml
+    - kubectl apply -f marketplace-d.yaml
+    - kubectl apply -f marketplace-sphinx.yaml
+    - kubectl rollout status -f marketplace.yaml
+    - kubectl rollout status -f marketplace-d.yaml
+    - kubectl rollout status -f marketplace-sphinx.yaml
+    - touch $CI_PROJECT_DIR/success
+    - touch $CI_PROJECT_DIR/deployed

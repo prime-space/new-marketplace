@@ -1,0 +1,15 @@
+{% extends 'letter/letterBase.html.twig' %}
+{% trans_default_domain 'letterCustomerSpaceAccess' %}
+
+{% block title %}{% trans %}Dear customer{% endtrans %}!{% endblock %}
+
+{% block body %}
+    {% trans %}In order to get access to your purchases, please, follow next link{% endtrans %}:
+    <br/>
+    <br/><a href="{{customerLink}}" target="_blank">{{customerLink}}</a>
+    <br/>
+    <br/>{% trans %}Do not show this link to anyone, include the seller{% endtrans %}!
+    <br/>
+    <br/>{% trans %}Thank you for using our service{% endtrans %}!
+    <br/>{% trans %}With respect, administration{% endtrans %} {{ siteName|upper }}
+{% endblock %}

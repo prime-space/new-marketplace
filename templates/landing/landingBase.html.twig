@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" type="image/png" href="{{ cdn }}/front/{{ version }}/favicon.png"/>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/css/style.css">
+    <title>{% block title %}{% endblock %}{{ siteName|upper }} </title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-56242302-3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-56242302-3');
+</script>
+<script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        m[i].l = 1 * new Date();
+        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(65758225, "init", {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+    });
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/65758225" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+</body>
+</html>

@@ -1,0 +1,11 @@
+controller: App\Api\Item\Main\Controller::action
+host: '%domain_api%'
+routes:
+  api.main.partner.products:
+    path: /partner/products
+    methods: [GET]
+    handler: App\Api\Item\Main\Handler\Partner\ProductApiHandler::list
+  api.main.partner.product:
+    path: /partner/product/{id}
+    methods: [GET]
+    handler: App\Api\Item\Main\Handler\Partner\ProductApiHandler::item

@@ -1,0 +1,67 @@
+{% trans_default_domain 'page' %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% if env == 'prod' %}
+        <link href="{{ cdn }}/front/{{ version }}/{{ appName }}/chunk-vendors.css" rel="stylesheet">
+        <link href="{{ cdn }}/front/{{ version }}/{{ appName }}/app.css" rel="stylesheet">
+        <link rel="icon" type="image/png" href="{{ cdn }}/front/{{ version }}/favicon.png"/>
+    {% else %}
+        <link rel="icon" type="image/png" href="/inc/favicon.png"/>
+    {% endif %}
+    {% for style in styles %}
+        <link rel=stylesheet href="{{ style }}">
+    {% endfor %}
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <title>{% if pageName is not null %}{{ pageName|trans }} | {% endif %}{{ siteName|upper }}</title>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but application doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong>
+</noscript>
+<div id="app">
+    <div class="background">
+        <div class="spinner"></div>
+    </div>
+</div>
+<script>var config = JSON.parse('{{ jsConfig|raw }}');</script>
+{% if env == 'prod' %}
+    <script src="{{ cdn }}/front/{{ version }}/{{ appName }}/chunk-vendors.js"></script>
+    <script src="{{ cdn }}/front/{{ version }}/{{ appName }}/app.js"></script>
+    {% if isGoogleAnalytics is defined and isGoogleAnalytics == true %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56242302-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-56242302-3');
+        </script>
+    {% endif %}
+    {% if isYandexMetrika is defined and isYandexMetrika == true %}
+        <script type="text/javascript" >
+            (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+            ym(65758225, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+            });
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/65758225" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    {% endif %}
+{% else %}
+    <script src="https://localhost:{{ frontDevPort }}/inc/{{ appName }}/chunk-vendors.js?{{ version }}"></script>
+    <script src="https://localhost:{{ frontDevPort }}/inc/{{ appName }}/app.js?{{ version }}"></script>
+{% endif %}
+{% for script in scripts %}
+    <script async src="{{ script.src }}"{% for scriptAttribute in script.attributes %} {{ scriptAttribute }}{% endfor %}></script>
+{% endfor %}
+</body>
+</html>

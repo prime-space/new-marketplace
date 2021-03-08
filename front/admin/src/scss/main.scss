@@ -1,0 +1,63 @@
+$loading-background-color: #0177fd;
+$loading-spinner-color: #fff;
+
+@import "loading.scss";
+
+.bold {
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+}
+
+.regTable {
+  display: table;
+  width: 100%;
+}
+
+.regTableRow {
+  display: table-row;
+}
+
+.regTableCell {
+  padding: 5px;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.v-dialog .v-card__title {
+  font-weight: 400 !important;
+  padding: 12px 12px 12px 12px !important;
+  font-size: 1.25rem !important;
+}
+
+.v-dialog .v-card__text {
+  margin-top: 20px;
+}
+
+.v-snack__wrapper {
+  min-width: auto!important;
+}
+
+.v-badge__badge {
+  width: 10px !important;
+  min-width: 10px !important;
+  height: 10px !important;
+  min-height: 10px !important;
+  right: 0 !important;
+  top: 0 !important;
+}
+
+.listTable__row__highlight {
+  background-color: rgba(56, 103, 214, 0.35);
+}
+
+.listTable__row__highlight:hover {
+  background-color: rgba(56, 103, 214, 0.6) !important;
+}
+
+.table_td__fitContent {
+  width: 1%;
+  white-space: nowrap;
+}

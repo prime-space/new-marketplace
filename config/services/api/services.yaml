@@ -1,0 +1,10 @@
+imports:
+  - { resource: main.yaml}
+  - { resource: admin.yaml}
+
+services:
+  App\Api\ApiRouteLoader:
+    tags: [routing.loader]
+    arguments:
+      - '@service_container'
+      - '%kernel.project_dir%/config/'

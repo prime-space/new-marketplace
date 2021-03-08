@@ -1,0 +1,113 @@
+{% extends 'landing/landingBase.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap">
+    <link rel="stylesheet" href="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/logo.svg" class="header__logo" alt="CrocusPay">
+                <h2 class="header__title">С нами ещё проще и надежнее зарабатывать<br> на продаже цифровой продукции.</h2>
+                <p class="header__subtitle">— продавайте: гифты, игровые ключи, личные аккаунты ...</p>
+                <button type="button" class="header__button">Начать продавать</button>
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/header-skeleton-left.png" class="header__skeleton-left" alt="">
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/header-skeleton-right.png" class="header__skeleton-right" alt="">
+            </div>
+        </div>
+    </header>
+
+    <div class="about">
+        <div class="container">
+            <div class="about__inner">
+                <div class="about__left">
+                    <h3>Что из себя<br> представляет CrocusPay? <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/about-emoji.png" alt=""></h3>
+                    <p>Мы являемся торговой интернет-площадкой, где каждый из вас может зарегистрироваться в качестве продавца, и абсолютно бесплатно осуществлять продажи своего цифрового продукта (игровые ключи, гифты, скины и тп.)</p>
+                </div>
+                <div class="about__right">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/about-img.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gift">
+        <div class="container">
+            <div class="gift__inner">
+                <div class="gift__left">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/gift-img.png" alt="">
+                </div>
+                <div class="gift__right">
+                    <h3>Вам подарок! <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/gift-emoji.png" alt=""></h3>
+                    <p>Самых активных и ответственных продавцов ожидает поощрение различными привилегиями, которые в свою очередь порадуют вас</p>
+                    <button type="button" class="gift__button">Присоединиться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dignity">
+        <div class="container">
+            <div class="dignity__inner">
+                <h3 class="dignity__title">Наши достоинства <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/dignity-emoji.png" alt=""></h3>
+                <div class="dignity__cards">
+                    <i class="fas fa-arrow-left arrow"></i>
+                    <div class="dignity__card">
+                        <div class="dignity__card-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="dignity__card-title">Быстрое<br> подключение</h3>
+                        <div class="dignity__card-text">Процедура подключения проходит в минимальные сроки, без модерации и лишних договоров.</div>
+                    </div>
+                    <div class="dignity__card">
+                        <div class="dignity__card-icon"><i class="fas fa-brackets-curly"></i></div>
+                        <h3 class="dignity__card-title">Обширный<br> функционал</h3>
+                        <div class="dignity__card-text">Простая в использовании система управления магазином/товарами, промоакциями/скидками. Подробная аналитика платежей и другое.</div>
+                    </div>
+                    <div class="dignity__card">
+                        <div class="dignity__card-icon"><i class="far fa-credit-card-front"></i></div>
+                        <h3 class="dignity__card-title">Универсальная<br> форма оплаты</h3>
+                        <div class="dignity__card-text">Вы получаете все доступные методы оплаты в нашей единой платежной форме. Visa/Mastercard, QIWI, Webmoney, Yandex, МТС, Мегафон, Билайн, Теле 2 и т.д.</div>
+                    </div>
+                    <i class="fas fa-arrow-right arrow"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="commission">
+        <div class="container">
+            <div class="commission__inner">
+                <div class="commission__left">
+                    <h3 class="dignity__title">А что по комиссии? <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/commission-emoji.png" alt=""></h3>
+                    <p>За свои услуги площадка взимает всего 2% с продажи</p>
+                </div>
+                <div class="commission__right">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/commission-icon.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="left">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/logo2.svg">
+                    <ul>
+                        <li>Продавцам</li>
+                        <li>Информация</li>
+                        <li>Правила</li>
+                        <li>Соглашение</li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <h5>Техническая поддержка, пишите нам:</h5>
+                    <button type="button" class="footer__contact-button"><i class="fas fa-envelope-open-text"></i> support@crocuspay.com</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

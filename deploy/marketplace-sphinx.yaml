@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketplace-sphinx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: marketplace-sphinx
+  template:
+    metadata:
+      labels:
+        app: marketplace-sphinx
+    spec:
+      containers:
+        - name: marketplace-sphinx
+          image: registry.gitlab.com/crocus-group/marketplace:__BUILD_TAG__
+          ports: [{containerPort: 9306}]
+          command: ['/bin/bash']
+          args: ['-c', "/var/www/html/deploy/sphinx-init.sh"]

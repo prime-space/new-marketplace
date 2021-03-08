@@ -1,0 +1,69 @@
+ewll_db:
+    bundles:
+        - 'EwllUserBundle'
+        - 'EwllMailerBundle'
+    connections:
+        default:
+            host: '%env(EWLL_DB_CONNECTIONS_DEFAULT_HOST)%'
+            database: '%env(EWLL_DB_CONNECTIONS_DEFAULT_DATABASE)%'
+            username: '%env(EWLL_DB_CONNECTIONS_DEFAULT_USERNAME)%'
+            password: '%env(EWLL_DB_CONNECTIONS_DEFAULT_PASSWORD)%'
+            cipherkey: '%env(EWLL_DB_CONNECTIONS_DEFAULT_CIPHERKEY)%'
+        queue:
+            host: '%env(EWLL_DB_CONNECTIONS_QUEUE_HOST)%'
+            database: '%env(EWLL_DB_CONNECTIONS_QUEUE_DATABASE)%'
+            username: '%env(EWLL_DB_CONNECTIONS_QUEUE_USERNAME)%'
+            password: '%env(EWLL_DB_CONNECTIONS_QUEUE_PASSWORD)%'
+        sphinx:
+            host: '%env(EWLL_DB_CONNECTIONS_SPHINX_HOST)%'
+            port: 9306
+            database: 'crutch'
+            username: 'root'
+            password: ''
+        sphinx_local:
+            host: '127.0.0.1'
+            port: 9306
+            database: 'crutch'
+            username: 'root'
+            password: ''
+        payarea:
+            host: '%env(EWLL_DB_CONNECTIONS_PAYAREA_HOST)%'
+            port: '%env(EWLL_DB_CONNECTIONS_PAYAREA_PORT)%'
+            database: '%env(EWLL_DB_CONNECTIONS_PAYAREA_DATABASE)%'
+            username: '%env(EWLL_DB_CONNECTIONS_PAYAREA_USERNAME)%'
+            password: '%env(EWLL_DB_CONNECTIONS_PAYAREA_PASSWORD)%'
+
+ewll_mailer:
+    host: '%env(EWLL_MAILER_HOST)%'
+    port: '%env(int:EWLL_MAILER_PORT)%'
+    secure: '%env(EWLL_MAILER_SECURE)%'
+    user: '%env(EWLL_MAILER_USER)%'
+    pass: '%env(EWLL_MAILER_PASS)%'
+    smtp_auth: '%env(bool:EWLL_MAILER_SMTP_AUTH)%'
+    sender_email: '%env(EWLL_MAILER_SENDER_EMAIL)%'
+    sender_name: '%env(EWLL_MAILER_SENDER_NAME)%'
+
+ewll_user:
+    redirect: 'https://private.%domain%'
+    cdn: '%cdn%/front/%version%'
+    salt: '%env(EWLL_USER_SALT)%'
+    domain: '%env(DOMAIN)%'
+    telegram_bot_name: '%env(TELEGRAM_BOT_NAME)%'
+    telegram_bot_token: '%env(TELEGRAM_BOT_TOKEN)%'
+    telegram_proxy: '%env(TELEGRAM_PROXY)%'
+    oauth:
+        google:
+            client_id: '%env(GOOGLE_OAUTH_CLIENT_ID)%'
+            client_secret: '%env(GOOGLE_OAUTH_CLIENT_SECRET)%'
+        facebook:
+            client_id: '%env(FACEBOOK_OAUTH_CLIENT_ID)%'
+            client_secret: '%env(FACEBOOK_OAUTH_CLIENT_SECRET)%'
+        vk:
+            client_id: '%env(VK_OAUTH_CLIENT_ID)%'
+            client_secret: '%env(VK_OAUTH_CLIENT_SECRET)%'
+    twofa:
+        actions:
+            - !php/const App\Twofa\Action\SaveApiSettingsTwofaAction::CONFIG
+            - !php/const App\Twofa\Action\AddPayoutTwofaAction::CONFIG
+
+ewll_mysql_message_broker: []

@@ -1,0 +1,17 @@
+services:
+  App\Api\Item\Main\Controller:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '@ewll.db.repository-provider'
+
+  App\Api\Item\Main\Handler\Partner\ProductApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@form.factory'
+      - '@translator'
+      - '%domain%'
+      - '%cdn%'
+      - '@ewll.sphinx.client'
+      - '%domain_buy%'

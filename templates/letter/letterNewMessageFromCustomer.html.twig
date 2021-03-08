@@ -1,0 +1,21 @@
+{% extends 'letter/letterBase.html.twig' %}
+{% trans_default_domain 'letterNewMessageFromCustomer' %}
+
+{% block title %}{% trans %}Dear user{% endtrans %}!{% endblock %}
+
+{% block body %}
+    {% trans %}On the marketplace {% endtrans %} <a href="https://{{ domain }}" target="_blank">{{ domain|upper }}</a> {% trans %}your got new message from customer{% endtrans %}.
+    <br/>
+    <br/>{% trans %}See details in private area{% endtrans %}:
+    <br/>
+    <br/><a href="{{ orderLink }}" target="_blank">{{ orderLink }}</a>
+    <br/>
+    <br/>{% trans %}Thank you for using our service{% endtrans %}!
+    <br/>{% trans %}With respect, administration{% endtrans %} {{ siteName|upper }}
+{% endblock %}
+
+{% block unsubscribe %}
+    <br/>
+    <a style="color: #0000EE" href="{{ orderLink }}" target="_blank">{% trans %}unsubscribe{% endtrans %}</a>
+    {% trans %}from notifications of new messages for this order{% endtrans %}
+{% endblock %}

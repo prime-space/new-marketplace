@@ -1,0 +1,217 @@
+{% extends 'landing/landingBase.html.twig' %}
+
+{% block title %}Защита покупателя | {% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/fontawesome/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    <header class="header">
+
+        <div class="container">
+            <div class="header__inner">
+                <div class="logo">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/header-logo.svg" alt="">
+                </div>
+                <div class="heading">
+                    <div class="title">Защита покупателя</div>
+                    <div class="text">Совершайте покупки на CrocusPay
+                        с уверенностью!</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="guarantees">
+        <div class="container">
+            <div class="guarantees__inner">
+                <div class="guarantees__block">
+                    <div class="decor">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-decor-1.svg" alt="">
+                    </div>
+                    <div class="text-block">
+                        <div class="title">
+                            Гарантия возврата денег
+                        </div>
+                        <div class="text">
+                            Мы вернем деньги, если цифровой товар, приобретенный вами на CrocusPay не работает или не соответствует описанию.
+                        </div>
+                    </div>
+                    <div class="image-block">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-1.svg" alt="">
+                    </div>
+                </div>
+                <div class="guarantees__block guarantees__block_reversed">
+                    <div class="decor-2">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-decor-2.svg" alt="">
+                    </div>
+                    <div class="decor-3">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-decor-3.svg" alt="">
+                    </div>
+                    <div class="decor-4">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-decor-4.svg" alt="">
+                    </div>
+                    <div class="image-block">
+                        <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/guarantee-2.svg" alt="">
+                    </div>
+                    <div class="text-block ">
+                        <div class="title">
+                            Как работает защита
+                            покупателя ?
+                        </div>
+                        <div class="text">
+                            Гарантия применяется ко всем клиентам, кто совершает покупки на СrocusPay.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="steps">
+        <img class="bg" src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/steps-bg.svg" alt="">
+        <div class="container">
+            <div class="steps__inner">
+                <div class="step-block">
+                    <div class="counter">
+                        01.
+                    </div>
+                    <div class="title">Свяжитесь с продавцом и сообщите о проблеме с товаром</div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-shopping-cart"></i>
+                        </div>
+                        <div class="content">Зайдите в <span class="bold">"Мои покупки"</span> и выберите проблемный товар. Обсудите проблему с продавцом и попытайтесь найти решение.</div>
+                    </div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-user-tie"></i>
+                        </div>
+                        <div class="content">У продавца имеется <span class="bold">Х дней</span>, чтобы разрешить вашу проблему. Он обязан вам помочь, так как Вы ставите ему оценку. Хороший
+                            отзыв - больше покупателей и денег. Плохой отзыв - меньше покупателей и денег.</div>
+                    </div>
+                    <div class="text-block text-block_align-center">
+                        <div class="icon">
+                            <i class="far fa-comment-alt-lines"></i>
+                        </div>
+                        <div class="content bordered bordered_blue">Отзыв можно оставить / изменить / удалить только <span class="bold">в течение 14 дней</span> после покупки.</div>
+                    </div>
+                </div>
+                <div class="step-block">
+                    <div class="counter">
+                        02.
+                    </div>
+                    <div class="title">Подайте иск на продавца</div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-engine-warning"></i>
+                        </div>
+                        <div class="content">Если вы не пришли к соглашению после обращения к продавцу, подайте иск <span class="bold">в течение Х дней</span> после доставки вашего товара.
+                            Подать иск можно на странице оплаченного товара, во вкладке <span class="bold">"Переписка с продавцом"</span>.</div>
+                    </div>
+                    <div class="text-block text-block_align-center">
+                        <div class="icon icon_orange">
+                            <i class="far fa-video"></i>
+                        </div>
+                        <div class="content bordered bordered_orange">Приложите все доказательства о проблемном товаре. Нам будет легче оценить правоту клиента, если вы <span class="bold">запишите видеозапись</span>
+                            от начала покупки, до проверки товара.</div>
+                    </div>
+
+                </div>
+                <div class="step-block">
+                    <div class="counter">
+                        03.
+                    </div>
+                    <div class="title">Получите деньги обратно</div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-check-circle"></i>
+                        </div>
+                        <div class="content">После того, как вы подали претензию со всей необходимой информацией, она будет обработана (профильным) отделом по
+                            безопасным покупкам.</div>
+                    </div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-check-circle"></i>
+                        </div>
+                        <div class="content">Вы будете проинформированы о ходе обработки претензии по
+                            электронной почте.</div>
+                    </div>
+                    <div class="text-block">
+                        <div class="icon">
+                            <i class="far fa-check-circle"></i>
+                        </div>
+                        <div class="content">Возврат денег будет произведен на ваш платежный способ оплаты. Электронный кошелек / Банковская карта и другое. (по
+                            желанию)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="help-us">
+        <div class="container">
+            <div class="help-us__inner">
+                <div class="title">
+                    Вы можете помочь нам сделать CrocusPay <br/>
+                    еще более безопасным!
+                </div>
+
+                <div class="text">
+                    Если у вас есть сомнения или вы подозреваете, что какой-либо продавец недобросовестный/что кто-то использует логотипы
+                    CrocusPay без нашего разрешения, чтобы злоупотребить доверием наших клиентов, пожалуйста, свяжитесь с нами здесь.
+                </div>
+
+                <div class="decoration">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/help-us.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="question">
+        <div class="container">
+            <div class="question__inner">
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/question-boy.svg" alt="">
+                <div class="right-block">
+                    <div class="title">Возник вопрос?</div>
+                    <div class="text">У нас для тебя найдется ответ! Все популярные вопросы по сервису мы собрали на специальной странице</div>
+                    <div class="button">Перейти</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="decoration">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/footer_decor.png" alt="">
+                </div>
+                <div>
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/footer_logo.png" alt="">
+
+                    <nav class="navigation">
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                    </nav>
+                </div>
+                <div class="support">
+                    <div>Техническая поддержка, пишите нам:</div>
+                    <a class="email" href="mailto:support@crocuspay.com"><i class="fas fa-envelope-open-text"></i>
+                        support@crocuspay.com</a>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+{% endblock %}

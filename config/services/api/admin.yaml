@@ -1,0 +1,64 @@
+imports:
+  - { resource: finder.yaml}
+
+services:
+  App\Api\Item\Admin\Controller:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '%admin_api_secret%'
+
+  App\Api\Item\Admin\Handler\ProductCategoryApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@form.factory'
+      - '@validator'
+      - '%siteName%'
+
+  App\Api\Item\Admin\Handler\ProductVerificationApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@form.factory'
+      - '@validator'
+      - '@App\Factory\EventFactory'
+      - '@ewll.db.client.default'
+      - '@App\Product\ProductStatusResolver'
+      - '%siteName%'
+
+  App\Api\Item\Admin\Handler\ProductApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@form.factory'
+      - '@validator'
+      - '@translator'
+      - '%siteName%'
+      - '%cdn%'
+
+  App\Api\Item\Admin\Handler\FinderApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - !tagged app.admin_api.finder.by_id
+
+
+  App\Api\Item\Admin\Handler\TicketApiHandler:
+    public: true
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@form.factory'
+      - '@validator'
+      - '@translator'
+      - '%siteName%'
+      - '%cdn%'
+      - '%admin_api_domain%'
+      - '%admin_api_secret%'
+      - '@App\Guzzle\Guzzle'
+      - '@ewll.db.client.default'
+      - '@App\Factory\EventFactory'
+      - '@Ewll\MailerBundle\Mailer'
+      - '@router'
+      - '%domain%'
+    tags: ['app.admin_api.handler']

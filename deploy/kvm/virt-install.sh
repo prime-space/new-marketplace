@@ -1,0 +1,11 @@
+virt-install \
+  --import \
+  --name "${vm}" \
+  --ram "${ram}" \
+  --vcpu "${vcpu}" \
+  --disk path=/var/lib/libvirt/images/${vm}-disk01.qcow2,format=qcow2 \
+  --os-type "${ostype}" \
+  --os-variant "${osvariant}" \
+  --network=default,model=virtio \
+  --noautoconsole \
+  --graphics vnc

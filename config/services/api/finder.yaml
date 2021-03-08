@@ -1,0 +1,6 @@
+services:
+  App\Api\Item\Admin\Finder\Item\ProductFinder:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@translator'
+    tags: ['app.admin_api.finder.by_id']

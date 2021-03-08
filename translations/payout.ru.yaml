@@ -1,0 +1,8 @@
+status:
+  client-view:
+    !php/const App\Entity\Payout::STATUS_ID_QUEUE: В процессе
+    !php/const App\Entity\Payout::STATUS_ID_PROCESS: В процессе
+    !php/const App\Entity\Payout::STATUS_ID_CHECKING: В процессе
+    !php/const App\Entity\Payout::STATUS_ID_SUCCESS: Выполнен
+    !php/const App\Entity\Payout::STATUS_ID_FAIL: Возврат средств
+    !php/const App\Entity\Payout::STATUS_ID_UNKNOWN: В процессе

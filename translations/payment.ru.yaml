@@ -1,0 +1,31 @@
+currency:
+  1:
+    sign: $
+    short: долл.
+    name: доллар
+    plural: доллары
+    short-latin: usd
+  2:
+    sign: €
+    short: евро
+    name: евро
+    plural: евро
+    short-latin: eur
+  3:
+    sign: ₽
+    short: руб.
+    name: рубль
+    plural: рубли
+    short-latin: rub
+  4:
+    sign: ₴
+    short: грн.
+    name: гривна
+    plural: гривны
+    short-latin: uah
+  5:
+    sign: Ƀ
+    short: btc
+    name: биткоин
+    plural: биткоин
+    short-latin: btc

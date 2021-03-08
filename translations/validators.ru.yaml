@@ -1,0 +1,55 @@
+unique: Значение не уникально
+product-category:
+    code-regex: !php/const App\Entity\ProductCategory::FIELD_CODE_REGEX
+tree:
+    not-choosed: Выберите категорию
+    is-empty:
+        subcategory: Удаляемая категория не должна иметь вложенных категорий
+        elements: Удаляемая категория не должна иметь привязанных элементов
+image:
+    not-choosed: Загрузите фотографию
+    size: Слишком большой размер изображения
+    base64-prefix: Ошибка декодирования изображения 1
+    decode: Ошибка декодирования изображения 2
+    data: Ошибка декодирования изображения 3
+    width: Неверная ширина изображения
+    height: Неверная высота изображения
+    upload: Не удалось загрузить файл в хранилище
+accuracy: 'Максимальная точность: %accuracy%'
+partnership:
+    active: Партнерство активно или подтверждается
+    seller-not-you-partner: Один или несколько продавцов не найдены в ваших партнерствах
+user:
+    nickname:
+        not-set: Установите никнейм в настройках аккаунта
+        unique: Такой никнейм уже есть в системе
+        regex: Разрешены только буквы, цифры, нижнее подчеркивание, дефис и точка.
+cart:
+    product-not-available-or-not-found: Товар недоступен
+    items:
+        max: 'Максимальное количество товаров в корзине - {{ limit }}'
+        min: 'Положите хотя бы один товар в корзину'
+    review:
+      date-expired: К сожалению, отзыв можно оставить\изменить\удалить только в течение %days% дней после покупки.
+      already-reviewed: Вы уже оставили отзыв к этому товару.
+sufficient-product-object-amount:
+    not-in-stock: Нет в наличии
+    not-enought: 'В наличии только %inStockNum% экземпляр(ов)'
+customer:
+    email-have-not-paid-orders: Не найдено ни одного оплаченного заказа на этот email адрес
+    is-blocked: Извините, вы не можете купить этот товар.
+payout:
+    amount:
+        insufficient-funds: Недостаточно средств
+    receiver:
+        incorrect: Неверный формат получателя
+#        self: Невозможно перечислить на тот же счет
+#        currency: Счет имеет другую валюту
+#        not-found: Счет не найден
+review:
+  already-answered: Вы уже ответили на этот отзыв.
+
+customer-blocked-entity:
+    invalid-entity-type-id: Недействительный идентификатор типа объекта
+    invalid-entity-id: Недействительный идентификатор объекта
+

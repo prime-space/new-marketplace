@@ -1,0 +1,76 @@
+services:
+  App\Command\AbstractCommand:
+    abstract: true
+    calls:
+      - [setLogExtraDataKeeper, ['@Ewll\LogExtraDataBundle\LogExtraDataKeeper']]
+      - [setRepositoryProvider, ['@ewll.db.repository-provider']]
+
+  App\Command\SphinxInitCommand:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@ewll.sphinx.client'
+      - '@ewll.db.client.sphinx_local'
+    tags:
+      - { name: 'console.command', command: 'sphinx:init' }
+
+  App\Command\DeleteReviewCommand:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@ewll.db.client.default'
+      - '@App\Product\ProductReviewStatActualizer'
+    tags:
+      - { name: 'console.command', command: 'app:product:review:delete' }
+
+  App\Command\SalesUpCommand:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+    tags:
+      - { name: 'console.command', command: 'sales:up' }
+      - { name: monolog.logger, channel: sales_up }
+
+  App\Command\FetchPayoutStatusesCommand:
+    parent: App\Command\AbstractCommand
+    arguments:
+      - '@logger'
+      - '%env(PRIMEPAYER_DOMAIN)%'
+      - '%env(int:PRIMEPAYER_USER_ID)%'
+      - '%env(PRIMEPAYER_API_KEY)%'
+      - '@ewll.db.client.default'
+      - '@App\Account\Accountant'
+      - '@App\Factory\EventFactory'
+    tags:
+      - { name: 'console.command', command: 'payout:fetch-statuses' }
+      - { name: monolog.logger, channel: payout }
+
+  App\Command\DumpEnvCommand:
+    arguments:
+      - '%kernel.project_dir%'
+    tags:
+      - { name: 'console.command', command: 'app:dump-env-json' }
+
+  App\Command\TestCommand:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\MailerBundle\Mailer'
+    tags:
+      - { name: 'console.command', command: 'test' }
+
+  App\Command\AddProductCommand:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\CrudBundle\Crud'
+      - '@App\Product\ProductStatusResolver'
+      - '%kernel.project_dir%'
+      - '@service_container'
+      - '@App\Product\ProductReviewStatActualizer'
+    tags:
+      - { name: 'console.command', command: 'product:add' }
+
+
+  App\Command\ActualizeProductReviewsCommand:
+    arguments:
+      - '@App\Product\ProductReviewStatActualizer'
+    tags:
+      - { name: 'console.command', command: 'product:review:actualize' }

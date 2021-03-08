@@ -1,0 +1,21 @@
+{% extends 'letter/letterBase.html.twig' %}
+{% trans_default_domain 'letterOrderCustomer' %}
+
+{% block title %}{% trans %}Dear customer{% endtrans %}!{% endblock %}
+
+{% block body %}
+    {% trans %}On the marketplace{% endtrans %} <a href="https://{{ domain }}" target="_blank">{{ domain|upper }}</a> {% trans %}you made a purchase{% endtrans %}.
+    <br/>
+    <br/>{% trans %}In order to get it follow the next link{% endtrans %}:
+    <br/>
+    <br/><a href="{{ orderLink }}" target="_blank">{{ orderLink }}</a>
+    <br/>
+    <br/>{% trans %}Do not show this link to anyone, include the seller{% endtrans %}!
+    <br/>
+    <br/>{% trans %}All your purchases you can see in customer space{% endtrans %}:
+    <br/>
+    <br/><a href="{{ customerLink }}" target="_blank">{{ customerLink }}</a>
+    <br/>
+    <br/>{% trans %}Thank you for purchase{% endtrans %}!
+    <br/>{% trans %}With respect, administration{% endtrans %} {{ siteName|upper }}
+{% endblock %}

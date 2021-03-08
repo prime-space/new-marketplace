@@ -1,0 +1,62 @@
+monolog:
+  handlers:
+    user:
+      type: rotating_file
+      path: "%kernel.logs_dir%/user.%kernel.environment%.log"
+      level: info
+      channels: [user]
+      max_files: 30
+    s3:
+      type: rotating_file
+      path: "%kernel.logs_dir%/s3.%kernel.environment%.log"
+      level: info
+      channels: [s3]
+      max_files: 30
+    primepayer:
+      type: rotating_file
+      path: "%kernel.logs_dir%/primepayer.%kernel.environment%.log"
+      level: info
+      channels: [primepayer]
+      max_files: 30
+    payment:
+      type: rotating_file
+      path: "%kernel.logs_dir%/payment.%kernel.environment%.log"
+      level: info
+      channels: [payment]
+      max_files: 30
+    transaction:
+      type: rotating_file
+      path: "%kernel.logs_dir%/transaction.%kernel.environment%.log"
+      level: info
+      channels: [transaction]
+      max_files: 30
+    mailer:
+      type: rotating_file
+      path: "%kernel.logs_dir%/mailer.%kernel.environment%.log"
+      level: info
+      channels: [mailer]
+      max_files: 30
+    payout:
+      type: rotating_file
+      path: "%kernel.logs_dir%/payout.%kernel.environment%.log"
+      level: info
+      channels: [payout]
+      max_files: 30
+    telegram:
+      type: rotating_file
+      path: "%kernel.logs_dir%/telegram.%kernel.environment%.log"
+      level: info
+      channels: [telegram]
+      max_files: 30
+    admin_api:
+      type: rotating_file
+      path: "%kernel.logs_dir%/admin_api.%kernel.environment%.log"
+      level: info
+      channels: [admin_api]
+      max_files: 30
+    sales_up:
+      type: rotating_file
+      path: "%kernel.logs_dir%/sales_up.%kernel.environment%.log"
+      level: info
+      channels: [sales_up]
+      max_files: 30

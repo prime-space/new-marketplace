@@ -1,0 +1,7 @@
+.idea
+/.env*
+/public/bundles/
+/var/
+/vendor/
+/.php_cs.cache
+/public/inc/admin/*

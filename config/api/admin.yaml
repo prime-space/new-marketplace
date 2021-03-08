@@ -1,0 +1,55 @@
+controller: App\Api\Item\Admin\Controller::action
+host: '%domain_internal%'
+prefix: adminApi
+routes:
+  api.admin.product:
+    path: /product/{id}
+    methods: [GET]
+    handler: App\Api\Item\Admin\Handler\ProductApiHandler::page
+
+  api.admin.product.objects:
+    path: /product/{id}/objects
+    methods: [GET]
+    handler: App\Api\Item\Admin\Handler\ProductApiHandler::objects
+
+  api.admin.product.category.get:
+    path: /categories
+    methods: [GET]
+    handler: App\Api\Item\Admin\Handler\ProductCategoryApiHandler::getFlat
+  api.admin.product.category.create:
+    path: /category
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\ProductCategoryApiHandler::create
+  api.admin.product.category.update:
+    path: /category/{id}
+    methods: [PUT]
+    handler: App\Api\Item\Admin\Handler\ProductCategoryApiHandler::update
+  api.admin.product.category.delete:
+    path: /category/{id}
+    methods: [DELETE]
+    handler: App\Api\Item\Admin\Handler\ProductCategoryApiHandler::delete
+
+  api.admin.product.verification.userList:
+    path: /product/verification/userList
+    methods: [GET]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::userList
+  api.admin.product.verification.productList:
+    path: /product/verification/productList/{id}
+    methods: [GET]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::productList
+  api.admin.product.verification.accept:
+    path: /product/{id}/verification/accept
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::accept
+  api.admin.product.verification.reject:
+    path: /product/{id}/verification/reject
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::reject
+  api.admin.product.verification.block:
+    path: /product/{id}/verification/block
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::block
+  api.admin.product.verification.unblock:
+    path: /product/{id}/verification/unblock
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\ProductVerificationApiHandler::unblock

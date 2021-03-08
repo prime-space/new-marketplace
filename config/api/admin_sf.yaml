@@ -1,0 +1,12 @@
+controller: App\Api\Item\Admin\Controller::action
+host: '%domain_internal%'
+prefix: sf/adminApi
+routes:
+  api.admin.ticket.create:
+    path: /newMessage
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\TicketApiHandler::newMessage
+  api.admin.finder:
+    path: /find
+    methods: [POST]
+    handler: App\Api\Item\Admin\Handler\FinderApiHandler::find

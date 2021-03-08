@@ -1,0 +1,160 @@
+ewll_user:
+  resource: '@EwllUserBundle/Resources/config/routing.yaml'
+  host: '%domain_auth%'
+ewll_user_global:
+  resource: '@EwllUserBundle/Resources/config/routing-global.yaml'
+
+ewll_crud:
+  resource: '@EwllCrudBundle/Resources/config/routing.yaml'
+  prefix: '/crud'
+#  host: '%domain%' //@TODO interface
+
+api_main:
+  resource: ./api/main.yaml
+  type: api
+
+api_admin:
+  resource: ./api/admin.yaml
+  type: api
+
+api_admin_sf:
+  resource: ./api/admin_sf.yaml
+  type: api
+
+index:
+  path: /
+  controller: App\Controller\IndexController::index
+  methods: [GET]
+  host: '%domain%'
+site.cart.add:
+  path: /add-to-cart/{productId}
+  controller: App\Controller\CartController::add
+  requirements: {productId: '\d+'}
+  defaults: {partnerUserId: null}
+  host: '%domain%'
+  methods: [POST]
+
+private:
+  path: /{route}
+  controller: App\Controller\IndexController::private
+  methods: [GET]
+  host: '%domain_private%'
+  requirements: {route: '^.+'}
+  defaults: {route: null}
+private.support:
+  path: /support/{ticketId}
+  controller: App\Controller\IndexController::private
+  methods: [GET]
+  host: '%domain_private%'
+  requirements: {ticketId: '\d+'}
+private.order:
+  path: /orders/{orderId}
+  controller: App\Controller\IndexController::private
+  methods: [GET]
+  host: '%domain_private%'
+  requirements: {orderId: '\d+'}
+
+landing.client-protection:
+  path: /
+  controller: App\Controller\IndexController::landing
+  methods: [GET]
+  host: '%domain_landing_client_protection%'
+  defaults: {landingName: 'client-protection'}
+landing.problem-solving:
+  path: /
+  controller: App\Controller\IndexController::landing
+  methods: [GET]
+  host: '%domain_landing_problem_solving%'
+  defaults: {landingName: 'problem-solving'}
+landing.guarantee:
+  path: /
+  controller: App\Controller\IndexController::landing
+  methods: [GET]
+  host: '%domain_landing_guarantee%'
+  defaults: {landingName: 'guarantee'}
+landing.promo:
+  path: /
+  controller: App\Controller\IndexController::landing
+  methods: [GET]
+  host: '%domain_landing_promo%'
+  defaults: {landingName: 'promo'}
+
+doc:
+  path: /{route}
+  controller: App\Controller\IndexController::doc
+  methods: [GET]
+  host: '%domain_doc%'
+  requirements: {route: '^.+'}
+  defaults: {route: null}
+
+cart:
+  path: /{route}
+  controller: App\Controller\CartController::cart
+  methods: [GET]
+  host: '%domain_buy%'
+  requirements: {route: '^.+'}
+  defaults: {route: null}
+cart.product.add:
+  path: /add/{productId}/{partnerUserId}
+  controller: App\Controller\CartController::add
+  requirements: {productId: '\d+', partnerUserId: '\d+'}
+  defaults: {partnerUserId: null}
+  host: '%domain_buy%'
+  methods: [POST]
+cart.product.set-amount:
+  path: /product/set-amount
+  controller: App\Controller\CartController::setProductAmount
+  host: '%domain_buy%'
+  methods: [POST]
+cart.fix:
+  path: /fix
+  controller: App\Controller\CartController::fix
+  host: '%domain_buy%'
+  methods: [POST]
+cart.set-locale:
+  path: /setLocale
+  controller: App\Controller\CartController::setLocale
+  methods: [POST]
+cart.set-currency:
+  path: /setCurrency
+  controller: App\Controller\CartController::setCurrency
+  methods: [POST]
+
+customer.space.auth:
+  path: /auth/{tokenKey}
+  controller: App\Controller\CustomerController::auth
+  methods: [GET]
+  host: '%domain_customer%'
+customer.space.exit:
+  path: /logout
+  controller: App\Controller\CustomerController::logout
+  methods: [GET]
+  host: '%domain_customer%'
+customer:
+  path: /{route}
+  controller: App\Controller\CustomerController::page
+  methods: [GET]
+  host: '%domain_customer%'
+  requirements: {route: '^.+'}
+  defaults: {route: null}
+customer.login:
+  path: /login
+  controller: App\Controller\CustomerController::login
+  methods: [POST]
+  host: '%domain_customer%'
+customer.order-only:
+  path: /order-only/{cartId}/{tokenCode}
+  controller: App\Controller\CustomerController::page
+  methods: [POST]
+  host: '%domain_customer%'
+customer.order.item:
+  path: /order/{cartId}/{cartItemId}
+  controller: App\Controller\CustomerController::page
+  methods: [GET]
+  host: '%domain_customer%'
+
+internal.payment.result:
+  path: /payment/result/primepayer
+  controller: App\Controller\InternalController::paymentResult
+  methods: [POST]
+  host: '%domain_internal%'

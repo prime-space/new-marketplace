@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketplace-d
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: marketplace-d
+  template:
+    metadata:
+      labels:
+        app: marketplace-d
+    spec:
+      containers:
+        - name: marketplace-d
+          image: registry.gitlab.com/crocus-group/marketplace:__BUILD_TAG__
+          command: ['/bin/bash']
+          args: ['-c', "crontab /var/www/html/deploy/cron && crond -n & /usr/bin/supervisord -n"]
+      imagePullSecrets:
+        - name: gitlab-registry

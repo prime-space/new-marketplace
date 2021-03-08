@@ -1,0 +1,17 @@
+services:
+
+  App\Crud\Unit\Payout\Form\Constraint\PayoutReceiverValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', !tagged payout_method]
+
+  App\Crud\Unit\Payout\Form\Constraint\EnoughMoneyValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', '@App\Account\Accountant']
+
+  App\Payout\Item\QiwiPayoutMethodManager:
+    tags: ['payout_method']
+    arguments: []
+
+  App\Payout\Item\YandexPayoutMethodManager:
+    tags: ['payout_method']
+    arguments: []

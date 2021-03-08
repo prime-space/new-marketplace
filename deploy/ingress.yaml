@@ -1,0 +1,91 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: marketplace
+  namespace: mktplc-production
+spec:
+  rules:
+    - host: crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: api.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: buy.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: internal.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: customer.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: private.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: auth.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: doc.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: client-protection.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: problem-solving.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: guarantee.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80
+    - host: promo.crocuspay.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: marketplace
+              servicePort: 80

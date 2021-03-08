@@ -1,0 +1,15 @@
+{% extends 'letter/letterBase.html.twig' %}
+{% trans_default_domain 'letterSupportAnswer' %}
+
+{% block title %}{% trans %}Dear user{% endtrans %}!{% endblock %}
+
+{% block body %}
+    {% trans %}You got a new response by your question{% endtrans %}
+    <br/>
+    <br/>{% trans %}See it in your account{% endtrans %}:
+    <br/>
+    <br/><a href="{{ detailsLink }}" target="_blank">{{ detailsLink }}</a>
+    <br/>
+    <br/>{% trans %}Thank you for using our service{% endtrans %}!
+    <br/>{% trans %}With respect, administration{% endtrans %} {{ siteName|upper }}
+{% endblock %}

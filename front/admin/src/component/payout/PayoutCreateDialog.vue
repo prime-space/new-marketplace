@@ -1,0 +1,67 @@
+<template>
+    <v-dialog v-model="dialog" width="500" content-class="payoutCreateDialog" persistent>
+        <template v-slot:activator="{ on }">
+            <v-btn v-on="on" @click="form.reset" color="primary" small dark>Новая выплата</v-btn>
+        </template>
+        <v-form v-if="form" @submit.prevent="submit" style="display:contents">
+            <v-card>
+                <v-card-title class="grey lighten-2">Новая выплата</v-card-title>
+                <v-card-text>
+                    <form-body v-model="form"/>
+                    <div class="error--text">
+                        <span v-if="form.errors.form">{{ form.errors.form }}</span>
+                    </div>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-btn @click="dialog = false" text>Отменить</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn type="submit" color="primary" :disabled="form.loading">Создать</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
+        <card-loading v-else/>
+    </v-dialog>
+</template>
+
+<script>
+    import CardLoading from "./../CardLoading";
+    import FormBody from "./../../form/FormBody";
+
+    export default {
+        components: {CardLoading, FormBody,},
+        props: {
+            formDefinition: Object,
+        },
+        data: () => ({
+            dialog: false,
+            form: null,
+        }),
+        created() {
+            this.form = this.$ewll.initForm(this, {
+                url: '/crud/payout',
+                definition: this.formDefinition,
+                data: this.formDefinition.data,
+                success: this.success,
+            });
+        },
+        mounted() {
+            this.init()
+        },
+        methods: {
+            init() {
+            },
+            submit() {
+                this.form.submit();
+            },
+            success(response) {
+                let currentAccountField = this.form.definition.fields.accountId.choices.find(x => x.value === this.form.data.accountId);
+                currentAccountField.text = response.body.extra.accountSelectText;
+                this.dialog = false;
+                this.$emit('created');
+            },
+        }
+    };
+</script>
+<style>
+</style>

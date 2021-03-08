@@ -1,0 +1,140 @@
+{% extends 'landing/landingBase.html.twig' %}
+
+{% block title %}Гарантии | {% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div class="logo">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/logo.svg" alt="">
+                </div>
+                <div class="heading">
+                    <h2 class="heading__title">CrocusPay — </h2>
+                    <h5 class="heading__text">Это надежный сервис для продажи и покупки цифровых товаров!</h5>
+                    <button type="button" class="heading__button">Опробовать сервис</button>
+                </div>
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/skeleton-left.png" class="skeleton-left" alt="">
+                <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/skeleton-right.png" class="skeleton-right" alt="">
+            </div>
+        </div>
+    </header>
+    <div class="benefits">
+        <div class="container">
+            <div class="benefits__inner">
+                <h3 class="benefits__title">Почему стоит выбрать<br> именно нашу компанию?</h3>
+                <h5 class="benefits__text">Мы бережно относимся к своим клиентам и стараемся делать всё возможное, чтобы Вам было максимально комфортно совершать покупки.</h5>
+                <div class="benefits__customers">
+                    <span class="benefits__value">3133+</span>
+                    <span class="benefits__inscription">Отзывы клиентов</span>
+                </div>
+                <div class="benefits__deals">
+                    <span class="benefits__value">1.330.370</span>
+                    <span class="benefits__inscription">Успешных сделок</span>
+                </div>
+                <div class="benefits__years-of-work">
+                    <span class="benefits__value">1</span>
+                    <span class="benefits__inscription" style="font-size: 23px;">Год работы</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="about">
+        <div class="container">
+            <div class="about__inner">
+                <div class="about__text">
+                    <div class="left">01. Наша компания официально зарегистрирована в Ирландской Республике — Republic of Ireland, Address, №1134312</div>
+                    <div class="right">02. CrocusPay имеет строгие процедуры AML / KYC для проверки своих продавцов. Каждый товар продавца проходит процедуру проверки, используя продвинутые алгоритмы.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="delivery">
+        <div class="container">
+            <div class="delivery__inner">
+                <div class="delivery__image">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/delivery_bg.png" alt="">
+                </div>
+                <div class="delivery__text">
+                    <h3>Моментальная доставка</h3>
+                    <p>Вы получаете товар мгновенно. Никакого ожидания, никаких задержек. Сразу после оплаты Вы попадаете на страницу с выбранным товаром. Копию товара вышлем на почту.</p>
+                    <h3>Поддержка клиентов</h3>
+                    <p>Наша поддержка сервиса работает 24/7. Вы точно не останетесь без ответа.</p>
+                    <h3>Приём платежей</h3>
+                    <p>Наша система сотрудничает с крупными платёжными агрегаторами. Принимаем более 30+ платежных систем.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="guarantees">
+        <div class="container">
+            <div class="guarantees__inner">
+                <div class="guarantees__text">
+                    <h3>Гарантия возврата денег</h3>
+                    <p>Если цифровой товар, приобретенный вами на CrocusPay, не соответствует описанию, не работает, вы получите возврат денег.<br>Деньги после покупки резервируется в системе на X дней.</p>
+                    <button type="button" class="guarantees__button">Подробнее о возврате</button>
+                </div>
+                <div class="guarantees__image"></div>
+            </div>
+        </div>
+    </div>
+    <div class="reviews">
+        <div class="container">
+            <div class="reviews__inner">
+                <div class="reviews__image"></div>
+                <div class="reviews__text">
+                    <h3>Отзывы к заказам</h3>
+                    <p>Вы всегда сможете ознакомиться с отзывами, оставленными другими клиентами об интересующем Вас товаре, либо высказать свое мнение лично.Все отрицательные отзывы рассматриваются нашими администраторами, после чего принимаются необходимые меры.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="security">
+        <div class="container">
+            <div class="security__inner">
+                <div class="security__text">
+                    <h3>Вы можете помочь нам сделать CrocusPay<br>еще более безопасным!</h3>
+                    <p>Если у вас есть сомнения или вы подозреваете, что какой-либо продавец недобросовестный/что кто-то использует логотипы CrocusPay без нашего разрешения, чтобы злоупотребить доверием наших клиентов, пожалуйста, свяжитесь с нами здесь.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="question">
+        <div class="container">
+            <div class="question__inner">
+                <div class="question__text">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/question_bg.png" alt="">
+                    <div class="question__support">
+                        <h3>Возник вопрос?</h3>
+                        <p>У нас для тебя найдется ответ! Все популярные вопросы по сервису мы собрали на специальной странице</p>
+                        <button type="button" class="support__button">Перейти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="left">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/images/logo.svg">
+                    <ul>
+                        <li>Продавцам</li>
+                        <li>Информация</li>
+                        <li>Правила</li>
+                        <li>Соглашение</li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <h5>Техническая поддержка, пишите нам:</h5>
+                    <button type="button" class="footer__contact-button"><i class="fas fa-envelope-open-text"></i> support@crocuspay.com</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

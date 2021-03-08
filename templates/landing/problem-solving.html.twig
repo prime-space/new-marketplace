@@ -1,0 +1,287 @@
+{% extends 'landing/landingBase.html.twig' %}
+
+{% block title %}Решение проблем | {% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/fontawesome/css/all.min.css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="form">
+        <div class="close-btn" id="close-icon">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="form__inner">
+            <div class="heading">
+                Задать вопрос
+            </div>
+
+            <div class="form-group">
+                <div class="form-heading">
+                    <div class="icon">
+                        <i class="fas fa-envelope"></i>
+
+                    </div>
+                    <div class="text">
+                        Ведите e-mail
+                    </div>
+                </div>
+                <input type="text" placeholder="example@gmail.ru">
+            </div>
+
+            <div class="form-group">
+                <div class="form-heading">
+                    <div class="icon">
+                        <i class="fas fa-file-edit"></i>
+
+                    </div>
+                    <div class="text">
+                        Тема
+                    </div>
+                </div>
+                <input type="text" placeholder="Я не могу покакать, что делать?">
+            </div>
+
+            <div class="form-group">
+                <div class="form-heading">
+                    <div class="icon">
+                        <i class="fas fa-file-edit"></i>
+
+                    </div>
+                    <div class="text">
+                        Что случилось
+                    </div>
+                </div>
+                <textarea placeholder="Подробно опишите проблему, которая у вас возникала"></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="form-heading">
+                    <div class="icon">
+                        <i class="fas fa-file-upload"></i>
+
+                    </div>
+                    <div class="text">
+                        Прикрепленные файлы
+                    </div>
+                </div>
+                <div class="button_file">
+                    Нажмите сюда или перетащите файл
+                </div>
+            </div>
+            <div class="button_send">
+                Отправить
+            </div>
+        </div>
+    </div>
+    <div class="form-bg"></div>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div class="logo">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/header-logo.svg" alt="">
+                </div>
+
+                <div class="heading">
+                    <div class="title">
+                        Отвечаем на вопросы
+                    </div>
+                    <div class="text">
+                        Ниже расположены ответы, на самые популярные и распространенные вопросы
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__header">
+                <div class="icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="title">Продавцам</div>
+                <div class="text">
+                    Популярны категории
+                </div>
+            </div>
+            <div class="main__inner">
+                <div class="left-block">
+                    <div class="first-block">
+                        <div class="icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="title">
+                            К вопросам покупателя
+                        </div>
+                    </div>
+                    <div class="second-block">
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                        <div class="list-item">
+                            <div class="icon">
+                                <i class="far fa-dot-circle"></i>
+                            </div>
+                            Общая информация
+                        </div>
+                    </div>
+                    <div class="third-block">
+                        <div class="icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div class="title">
+                            Остались вопросы?
+                        </div>
+                        <div class="text">
+                            Или вообще нихуя не понятно, воспользуйтесь формой обратной связи
+                        </div>
+                        <div class="button" id="form-btn">Написать</div>
+                    </div>
+                </div>
+                <div class="right-block">
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                        <div class="body">
+                            <div class="divider">
+
+                            </div>
+                            Все сделки на CrocusPay защищены, однако, для дополнительной безопасности можно перестраховаться и
+                            обратить внимание на
+                            следующие характеристики продавца:
+
+                            Значок идентификации. Идентифицированные продавцы заслуживают большего доверия, но лишь в небольшой
+                            степени.
+                            Дата регистрации. Чем старше аккаунт продавца, тем лучше.
+                            Отзывы. Чем больше, тем лучше. При этом прочитать сами отзывы тоже будет не лишним — иногда в них
+                            содержится довольно
+                            ценная информация.
+                            Даты отзывов. Также очень важный параметр, поскольку даже в том случае, если дата регистрации самого
+                            аккаунта продавца
+                            старая (что само по себе хорошо), но абсолютно все отзывы получены недавно, это означает, что продавец не
+                            столь опытен и
+                            надежен.
+                            Игры, в которых были заработаны отзывы. Если у продавца все отзывы из одной игры, а вы
+                        </div>
+                    </div>
+                    <div class="answer">
+                        <div class="title">
+                            Юридическая информация
+                        </div>
+                        <div class="toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="decoration">
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/footer_decor.png" alt="">
+                </div>
+                <div>
+                    <img src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/assets/footer_logo.png" alt="">
+
+                    <nav class="navigation">
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                        <a href="#">
+                            Продавцам
+                        </a>
+                    </nav>
+                </div>
+                <div class="support">
+                    <div>Техническая поддержка, пишите нам:</div>
+                    <a class="email" href="mailto:support@crocuspay.com"><i class="fas fa-envelope-open-text"></i>
+                        support@crocuspay.com</a>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+    <script src="{{ cdn }}/front/{{ version }}/landings/{{ landingName }}/js/script.js"></script>
+{% endblock %}

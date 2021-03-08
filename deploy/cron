@@ -1,0 +1,4 @@
+SHELL=/bin/bash
+MAILTO=""
+* * * * * sudo -u nobody /usr/bin/php /var/www/html/bin/console ewll:user:flush
+* * * * * sudo -u nobody /usr/bin/php /var/www/html/bin/console payout:fetch-statuses

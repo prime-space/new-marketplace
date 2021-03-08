@@ -1,0 +1,715 @@
+imports:
+  - { resource: services/api/services.yaml}
+  - { resource: services/command.yaml}
+  - { resource: services/payout.yaml}
+
+parameters:
+  env: '%env(APP_ENV)%'
+  siteName: '%env(SITE_NAME)%'
+  cdn: '%env(CDN)%'
+  version: '%env(APP_VERSION)%'
+  domain: '%env(DOMAIN)%'
+  domain_private: 'private.%domain%'
+  domain_auth: 'auth.%domain%'
+  domain_api: 'api.%domain%'
+  domain_doc: 'doc.%domain%'
+  domain_buy: 'buy.%domain%'
+  domain_customer: 'customer.%domain%'
+  domain_internal: 'internal.%domain%'
+  domain_landing_client_protection: 'client-protection.%domain%'
+  domain_landing_problem_solving: 'problem-solving.%domain%'
+  domain_landing_guarantee: 'guarantee.%domain%'
+  domain_landing_promo: 'promo.%domain%'
+  locale_detect_domains: ['%domain%', '%domain_buy%']
+  admin_api_domain: '%env(API_ADMIN_DOMAIN)%'
+  admin_api_secret: '%env(API_ADMIN_SECRET)%'
+  email_info: '%env(EWLL_MAILER_SENDER_EMAIL)%'
+
+services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+
+  App\Repository\:
+    resource: '../src/Repository'
+    tags: ['repositories']
+
+  App\Guzzle\Guzzle:
+    arguments: ['%env%']
+
+  App\Controller\IndexController:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@Ewll\UserBundle\AccessRule\AccessRuleProvider'
+      - '@Ewll\UserBundle\Twofa\JsConfigCompiler'
+      - '%siteName%'
+      - '%cdn%'
+      - '%domain%'
+      - '%domain_doc%'
+      - '%domain_auth%'
+      - '@App\Currency\CurrencyManager'
+      - '%domain_api%'
+      - '%domain_private%'
+      - '%email_info%'
+      - '%domain_customer%'
+      - '%domain_buy%'
+      - '@App\Cart\CartManager'
+
+  App\Controller\CartController:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '%siteName%'
+      - '%cdn%'
+      - '%domain%'
+      - '@App\Cart\CartManager'
+      - '@ewll.db.repository-provider'
+      - '@validator'
+      - '@App\Partner\PartnerManager'
+      - '@Ewll\CrudBundle\Form\FormFactory'
+      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+      - '@App\Currency\CurrencyManager'
+      - '@App\Payment\PaymentInitializer'
+      - '@translator'
+
+  App\Controller\CustomerController:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '%siteName%'
+      - '%cdn%'
+      - '%domain%'
+      - '@App\Currency\CurrencyManager'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+      - '@ewll.db.repository-provider'
+      - '@App\Payment\PaymentInitializer'
+      - '@Ewll\MailerBundle\Mailer'
+      - '@router'
+      - '@App\Form\DataTransformer\CustomerToEmailTransformer'
+
+  App\Controller\InternalController:
+    tags: ['controller.service_arguments']
+    calls: [[setContainer, ['@service_container']]]
+    arguments:
+      - '@App\Payment\PrimepayerPaymentSystem'
+      - '@ewll.db.repository-provider'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+
+  App\Form\Constraint\UniqueValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Form\Constraint\NicknameIsSetValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@Ewll\UserBundle\Authenticator\Authenticator']
+
+  App\Form\Constraint\PartnershipNotExistsOrRejectedValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', '@Ewll\UserBundle\Authenticator\Authenticator']
+
+  App\Form\Constraint\CustomerIsNotBlockedBySellerValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Form\Constraint\TreeIsEmptyValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Form\Constraint\AccuracyValidator:
+    tags: ['validator.constraint_validator']
+    arguments: []
+
+  App\Form\Constraint\CustomerBlockedEntityExistValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', '@request_stack']
+
+  App\Product\Form\Constraint\SufficientProductObjectAmountValidator:
+    tags: ['validator.constraint_validator']
+    arguments:
+      - '@ewll.db.repository-provider'
+
+  App\Form\DataTransformer\StorageFileToBase64ViewTransformerFactory:
+    arguments: ['@ewll.db.repository-provider', '@App\Storage\FileLoader']
+
+  App\Crud\Unit\Product\ProductCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Form\DataTransformer\StorageFileToBase64ViewTransformerFactory'
+      - '@translator'
+      - '@ewll.sphinx.client'
+      - '%domain%'
+      - '%domain_buy%'
+
+  App\Crud\Unit\CustomerCart\CustomerCartCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '@request_stack'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+
+  App\Crud\Unit\CartItem\CartItemCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '@request_stack'
+      - '%cdn%'
+
+  App\Crud\Unit\CustomerCartItemMessage\CustomerCartItemMessageCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Factory\EventFactory'
+      - '@App\Customer\CustomerIdByRequestFinder'
+      - '@router'
+      - '@Ewll\MailerBundle\Mailer'
+      - '%domain%'
+
+  App\Crud\Unit\CustomerCartItemReview\CustomerCartItemReviewCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Customer\CustomerIdByRequestFinder'
+      - '@App\Factory\EventFactory'
+      - '@Ewll\CrudBundle\ReadViewCompiler\ReadViewCompiler'
+      - '@App\Product\ProductReviewStatActualizer'
+
+  App\Crud\Unit\Customer\CartItemMessageNotification\CartItemMessageNotificationCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Customer\CustomerIdByRequestFinder'
+
+  App\Crud\Unit\SellerReview\SellerReviewCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '@request_stack'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+      - '@App\Factory\EventFactory'
+      - '@Ewll\CrudBundle\ReadViewCompiler\ReadViewCompiler'
+
+  App\Crud\Unit\Transaction\TransactionCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Account\Accountant'
+      - '@translator'
+      - '@App\Chart\ChartDataCompiler'
+
+  App\Crud\Unit\Ticket\TicketCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+
+  App\Crud\Unit\TicketMessage\TicketMessageCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+      - '@App\Api\Item\Admin\Handler\TicketApiHandler'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+
+  App\Crud\Unit\CartItemMessage\CartItemMessageCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+      - '@App\Api\Item\Admin\Handler\TicketApiHandler'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@router'
+      - '@Ewll\MailerBundle\Mailer'
+      - '%domain%'
+
+  App\Crud\Unit\Seller\CartItemMessageNotification\CartItemMessageNotificationCrudUnit:
+    tags: [ 'ewll_crud_unit' ]
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\Order\OrderCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+
+  App\Crud\Unit\Tariff\TariffCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\Payout\PayoutCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+      - '@App\Account\Accountant'
+
+  App\Crud\Unit\CartOrderOnly\CartOrderOnlyCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '@App\Payment\PaymentInitializer'
+      -
+  App\Crud\Unit\CustomerBlockedEntity\CustomerBlockedEntityCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\CartItemOrderOnly\CartItemOrderOnlyCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '%cdn%'
+
+  App\Crud\Unit\CustomerCartItem\CustomerCartItemCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Cart\CartManager'
+      - '%cdn%'
+      - '@request_stack'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+
+  App\Crud\Unit\PartnershipAgentProduct\PartnershipAgentProductCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '%domain_buy%'
+
+  App\Crud\Unit\SiteProduct\SiteProduct:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '%domain_buy%'
+
+  App\Crud\Unit\SiteProductReview\SiteProductReview:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\PartnershipAgentProduct_ProductGroup\PartnershipAgentProduct_ProductGroupCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\PartnershipAgentProductGroup\PartnershipAgentProductGroupCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '%domain%'
+
+  App\Crud\Unit\AgentSettings\AgentSettingsCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\AgentOffer\AgentOfferCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\AgentOffer\CustomAction\Reject:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\AgentOffer\CustomAction\Accept:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@ewll.db.client.default'
+      - '@App\Factory\EventFactory'
+
+  App\Crud\Unit\PartnershipSellerAgent\CustomAction\Terminate:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@ewll.db.client.default'
+      - '@App\Factory\EventFactory'
+
+  App\Crud\Unit\PartnershipSellerSearchAgent\PartnershipSellerSearchAgentCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\PartnershipSellerAgent\PartnershipSellerAgentCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Factory\EventFactory'
+
+  App\Crud\Unit\PartnershipSellerSettings\PartnershipSellerSettingsCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\PartnershipAgentSeller\PartnershipAgentSellerCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\PartnershipAgentSeller\CustomAction\Terminate:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@ewll.db.client.default'
+      - '@App\Factory\EventFactory'
+
+  App\Crud\Unit\Event\EventCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@translator'
+
+  App\Crud\Unit\ApiSettings\ApiSettingsCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\AccountInfo\AccountInfoCrudUnit:
+    tags: ['ewll_crud_unit']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\Product\CustomAction\SendToVerification:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Crud\Unit\Product\CustomAction\Discontinuing:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Crud\Unit\Product\CustomAction\Continuing:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments: ['@ewll.db.repository-provider', '@App\Product\ProductStatusResolver']
+
+  App\Crud\Unit\Product\CustomAction\ObjectManipulating:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\CrudBundle\Form\FormFactory'
+      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+      - '@ewll.db.client.default'
+      - '@App\Product\ProductStatusResolver'
+
+  App\Crud\Unit\Product\CustomAction\ObjectsAdd:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\CrudBundle\Form\FormFactory'
+      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+      - '@ewll.db.client.default'
+      - '@App\Product\ProductStatusResolver'
+
+#  App\Crud\Unit\Cart\CustomAction\AddItem:
+#    tags: ['ewll_crud_unit_custom_action']
+#    arguments:
+#      - '@Ewll\CrudBundle\Form\FormFactory'
+#      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+#      - '@App\Cart\CartManager'
+
+#  App\Crud\Unit\Cart\CustomAction\SetProductAmount:
+#    tags: ['ewll_crud_unit_custom_action']
+#    arguments:
+#      - '@Ewll\CrudBundle\Form\FormFactory'
+#      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+#      - '@App\Cart\CartManager'
+
+  App\Crud\Unit\PartnershipSellerSearchAgent\CustomAction\Offer:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\CrudBundle\Form\FormFactory'
+      - '@Ewll\CrudBundle\Form\FormErrorCompiler'
+      - '@ewll.db.client.default'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@App\Factory\EventFactory'
+
+  App\Crud\Unit\Event\CustomAction\MarkAllAsRead:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Crud\Unit\Event\CustomAction\MarkAsRead:
+    tags: ['ewll_crud_unit_custom_action']
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Form\DataTransformer\CustomerToEmailTransformer:
+    arguments: ['@ewll.db.repository-provider']
+
+  App\Crud\Transformer\ConvertMoneyTransformer:
+    tags: ['crud_view_transformer']
+    arguments:
+      - '@App\Currency\CurrencyConverter'
+      - '@App\Currency\CurrencyManager'
+
+  App\Crud\Transformer\MaskEmailTransformer:
+    tags: ['crud_view_transformer']
+
+  App\Crud\Transformer\MaskIpTransformer:
+    tags: ['crud_view_transformer']
+
+  App\Storage\FileLoader:
+    tags: [{name: monolog.logger, channel: s3}]
+    arguments:
+      - '@logger'
+      - '%env(AWS_KEY)%'
+      - '%env(AWS_SECRET)%'
+      - '%env(AWS_REGION)%'
+      - '%env(AWS_S3_BUCKET_NAME)%'
+
+  App\Factory\EventFactory:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+
+  App\Product\ProductStatusResolver:
+    arguments: []
+
+  App\Product\ProductReviewStatActualizer:
+    arguments:
+      - '@ewll.db.repository-provider'
+
+  ewll.sphinx.client:
+    class: App\Sphinx\SphinxClient
+    public: true
+    arguments:
+      - '@ewll.db.client.sphinx'
+
+  App\Cart\CartToken:
+    tags: ['ewll_user_token']
+
+  App\Cart\OrderOnlyToken:
+    tags: ['ewll_user_token']
+
+  App\Customer\Token\CustomerToken:
+    tags: ['ewll_user_token']
+
+  App\Cart\CartManager:
+    arguments:
+      - '@Ewll\UserBundle\Token\TokenProvider'
+      - '@request_stack'
+      - '@ewll.db.repository-provider'
+      - '@ewll.db.client.default'
+      - '%domain%'
+      - '@App\Currency\CurrencyConverter'
+      - '%domain_customer%'
+      - '@App\Partner\PartnerManager'
+
+  App\Customer\CustomerIdByRequestFinder:
+    arguments:
+      - '@App\Cart\CartManager'
+      - '@request_stack'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+
+  App\Payment\PrimepayerPaymentSystem:
+    arguments:
+      - '%env(PRIMEPAYER_SHOP_ID)%'
+      - '%env(PRIMEPAYER_SHOP_KEY)%'
+      - '@logger'
+    tags:
+      - { name: monolog.logger, channel: primepayer }
+
+  App\Payment\PaymentInitializer:
+    arguments:
+      - '@App\Payment\PrimepayerPaymentSystem'
+      - '@Ewll\UserBundle\Token\TokenProvider'
+      - '@App\Cart\CartManager'
+
+  App\Currency\CurrencyManager:
+    arguments:
+      - '@request_stack'
+      - '@translator'
+
+  App\Currency\CurrencyConverter:
+    arguments:
+      - '@ewll.db.repository-provider'
+
+  App\Partner\PartnerManager:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '%domain%'
+      - '@request_stack'
+
+  App\EventSubscriber\LocaleSubscriber:
+    tags: [kernel.event_subscriber]
+    arguments:
+      - '%locale_detect_domains%'
+      - '%kernel.default_locale%'
+      - '%domain%'
+      - '@ewll.db.repository-provider'
+
+  App\Daemon\ExecOrderDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@logger'
+      - '@ewll.db.client.default'
+      - '@App\Product\ProductStatusResolver'
+      - '@Ewll\MailerBundle\Mailer'
+      - '@App\Cart\CartManager'
+      - '@router'
+      - '%domain%'
+      - '@translator'
+      - '@App\Account\Accountant'
+      - '@App\Currency\CurrencyConverter'
+      - '@App\Factory\EventFactory'
+      - '@App\Partner\PartnerManager'
+    tags:
+      - { name: 'console.command', command: 'daemon:order:exec' }
+      - { name: monolog.logger, channel: payment }
+
+  App\Daemon\ExecTransactionDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@ewll.db.client.default'
+      - '@App\Account\Accountant'
+    tags:
+      - { name: 'console.command', command: 'daemon:transaction:exec' }
+      - { name: monolog.logger, channel: transaction }
+
+  App\Daemon\TelegramNotificationDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@App\Telegram\TelegramSender'
+    tags:
+      - { name: 'console.command', command: 'daemon:telegram:send' }
+      - { name: monolog.logger, channel: telegram }
+
+  App\Daemon\SalesUpDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@ewll.db.client.default'
+    tags:
+      - { name: 'console.command', command: 'daemon:sales:up' }
+      - { name: monolog.logger, channel: sales_up }
+
+  App\Daemon\AdminApiRequestDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - !tagged app.admin_api.handler
+    tags:
+      - { name: 'console.command', command: 'daemon:admin_api:request' }
+      - { name: monolog.logger, channel: admin_api }
+
+  App\Daemon\SendPayoutDaemon:
+    autowire: false
+    autoconfigure: false
+    parent: Ewll\MysqlMessageBrokerBundle\AbstractDaemon
+    arguments:
+      - '@logger'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@ewll.db.client.default'
+      - '%env(PRIMEPAYER_DOMAIN)%'
+      - '%env(int:PRIMEPAYER_USER_ID)%'
+      - '%env(PRIMEPAYER_API_KEY)%'
+      - '@App\Telegram\TelegramSender'
+    tags:
+      - { name: 'console.command', command: 'daemon:payout:send' }
+      - { name: monolog.logger, channel: payout }
+
+  App\Account\Accountant:
+    arguments:
+      - '@ewll.db.repository-provider'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@ewll.db.client.default'
+      - '@translator'
+      - '@form.factory'
+      - '@Ewll\UserBundle\Authenticator\Authenticator'
+      - '@logger'
+
+  App\Chart\ChartDataCompiler:
+    arguments:
+      - '@ewll.db.repository-provider'
+
+
+  App\Telegram\TelegramSender:
+    arguments:
+      - '%domain%'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '%env(TELEGRAM_CHAT_ID)%'
+      - '%env(TELEGRAM_BOT_TOKEN)%'
+
+  App\Crud\Source\AdminApiSource:
+    tags: ['ewll.crud.source']
+    arguments:
+      - !tagged app.admin_api.handler
+      - '@ewll.db.repository-provider'
+      - '@Ewll\MysqlMessageBrokerBundle\MessageBroker'
+      - '@ewll.db.client.default'
+
+  App\Crud\Unit\CustomerCartItemReview\Form\Constraint\CartPaidNotLongerThanValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', '@request_stack']
+
+  App\Crud\Unit\CustomerCartItemReview\Form\Constraint\CartItemNoHaveReviewValidator:
+    tags: ['validator.constraint_validator']
+    arguments: ['@ewll.db.repository-provider', '@request_stack']
